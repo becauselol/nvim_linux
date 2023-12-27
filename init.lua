@@ -9,6 +9,16 @@ vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappin
 vim.wo.number = true
 vim.wo.relativenumber = true
 
+--remapping to allow for centering
+vim.keymap.set({'n'}, 'j', 'jzz')
+vim.keymap.set({'n'}, 'k', 'kzz')
+
+vim.keymap.set({'n'}, '<C-u>', '<C-u>zz')
+vim.keymap.set({'n'}, '<C-d>', '<C-d>zz')
+
+vim.keymap.set({'n'}, '<C-f>', '<C-f>zz')
+vim.keymap.set({'n'}, '<C-b>', '<C-b>zz')
+
 -- Copying to system clipboard
 -- From current cursor position to EOL (normal mode)
 vim.keymap.set({'n'}, '<C-c>', '"+y$')
