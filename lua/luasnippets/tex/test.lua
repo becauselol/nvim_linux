@@ -42,6 +42,48 @@ return {
 		)
 	),
 	s(
+		{ trig = "theorem" },
+		fmta(
+			[[
+      \begin{theorem}{<>}{}
+        <>
+      \end{theorem}
+    ]],
+			{
+				i(1),
+				i(2),
+			}
+		)
+	),
+	s(
+		{ trig = "note" },
+		fmta(
+			[[
+      \begin{note}{<>}{}
+        <>
+      \end{note}
+    ]],
+			{
+				i(1),
+				i(2),
+			}
+		)
+	),
+	s(
+		{ trig = "def" },
+		fmta(
+			[[
+      \begin{definition}{<>}{}
+        <>
+      \end{definition}
+    ]],
+			{
+				i(1),
+				i(2),
+			}
+		)
+	),
+	s(
 		{ trig = "align" },
 		fmta(
 			[[
