@@ -20,7 +20,7 @@ return {
 			-- see below for full list of optional dependencies 👇
 		},
 		opts = {
-			notes_subdir = "000 Zettlekasten",
+			notes_subdir = "000 Zettlekast",
 			new_notes_location = "notes_subdir",
 			note_id_func = function(title)
 				return title
