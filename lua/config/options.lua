@@ -16,3 +16,4 @@ end
 LineNumberColors()
 
 opt.spelllang = "en_gb"
+opt.clipboard = "unnamedplus"
