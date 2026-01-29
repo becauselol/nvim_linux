@@ -7,6 +7,9 @@ end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 require("lazy").setup({
+	rocks = {
+		hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
+	},
 	spec = {
 		-- add LazyVim and import its plugins
 		{ "LazyVim/LazyVim", import = "lazyvim.plugins" },
