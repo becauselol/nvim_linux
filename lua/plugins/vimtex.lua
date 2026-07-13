@@ -22,13 +22,12 @@ return {
 						or vim.fn.expand("%:t:r")
 					local src = root .. "/" .. out_dir .. "/" .. name .. ".pdf"
 					local dst = root .. "/" .. name .. ".pdf"
-					vim.uv.fs_copyfile(src, dst, function(err)
-						if err then
-							vim.schedule(function()
-								vim.notify("PDF copy failed: " .. err, vim.log.levels.WARN)
-							end)
-						end
-					end)
+					local ok, err = os.rename(src, dst)
+					if not ok then
+						vim.schedule(function()
+							vim.notify("PDF move failed: " .. tostring(err), vim.log.levels.WARN)
+						end)
+					end
 				end,
 			})
 			vim.api.nvim_create_autocmd("FileType", {

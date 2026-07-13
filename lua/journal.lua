@@ -78,6 +78,25 @@ function Journal.new(base_dir)
 		ensure_dir(output_dir())
 	end
 
+	local function output_pdf_path(name)
+		return output_dir() .. "/" .. name .. ".pdf"
+	end
+
+	local function final_pdf_path(name)
+		return M.notes_dir .. "/" .. name .. ".pdf"
+	end
+
+	local function move_pdf_from_output(name)
+		local src = output_pdf_path(name)
+		local dst = final_pdf_path(name)
+		local ok, err = os.rename(src, dst)
+		if not ok then
+			vim.notify("Failed to move PDF to " .. dst .. ": " .. tostring(err), vim.log.levels.ERROR)
+			return false
+		end
+		return true
+	end
+
 	-- Open today's note
 	function M.open_today()
 		local year, month, day = get_date_parts()
@@ -271,7 +290,9 @@ function Journal.new(base_dir)
 			cwd = M.notes_dir,
 			on_exit = function(_, code)
 				if code == 0 then
-					vim.notify("Notes compiled successfully!", vim.log.levels.INFO)
+					if move_pdf_from_output("master") then
+						vim.notify("Notes compiled successfully!", vim.log.levels.INFO)
+					end
 				else
 					vim.notify("Failed to compile notes", vim.log.levels.ERROR)
 				end
@@ -295,7 +316,7 @@ function Journal.new(base_dir)
 
 	-- View compiled notes
 	function M.view_notes()
-		local pdf_file = output_dir() .. "/master.pdf"
+		local pdf_file = final_pdf_path("master")
 		if not file_exists(pdf_file) then
 			vim.notify("No compiled PDF found. Compiling first...", vim.log.levels.WARN)
 			M.compile_notes()
@@ -345,7 +366,11 @@ function Journal.new(base_dir)
 			cwd = M.notes_dir,
 			on_exit = function(_, code)
 				if code == 0 then
-					vim.notify("Notes compiled successfully!", vim.log.levels.INFO)
+					if move_pdf_from_output("master") then
+						vim.notify("Notes compiled successfully!", vim.log.levels.INFO)
+					else
+						return
+					end
 					if on_success then
 						on_success()
 					end
@@ -358,7 +383,7 @@ function Journal.new(base_dir)
 
 	-- View notes with zathura (auto-reloads on PDF change)
 	function M.view_notes_zathura()
-		local pdf_file = output_dir() .. "/master.pdf"
+		local pdf_file = final_pdf_path("master")
 
 		-- Check if zathura is already running with our PDF
 		if M.zathura_pid then
@@ -400,7 +425,9 @@ function Journal.new(base_dir)
 			cwd = M.notes_dir,
 			on_exit = function(_, code)
 				if code == 0 then
-					vim.notify("Notes compiled!", vim.log.levels.INFO)
+					if move_pdf_from_output("master") then
+						vim.notify("Notes compiled!", vim.log.levels.INFO)
+					end
 				else
 					vim.notify("Compile failed", vim.log.levels.ERROR)
 				end
